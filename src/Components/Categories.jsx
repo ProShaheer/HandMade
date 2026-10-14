@@ -1,0 +1,48 @@
+const categories = [
+  { name: "Crochet", image: "/images/crochet.jpg" },
+  { name: "Textiles", image: "/images/textiles.jpg" },
+  { name: "Accessories", image: "/images/accessories.jpg" },
+  { name: "Plushies", image: "/images/plushies.jpg" },
+  { name: "Home Decor", image: "/images/homedecor.jpg" },
+];
+
+function Categories() {
+  return (
+    <section id="categories" className="mx-auto max-w-6xl px-6 py-10">
+      <div className="flex items-end justify-between">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-brand">
+            Shop by craft
+          </p>
+          <h2 className="mt-1 text-2xl font-bold text-cocoa md:text-3xl">
+            Find your favorite makers
+          </h2>
+        </div>
+        <a href="#" className="text-sm text-cocoa">
+          Shop all categories
+        </a>
+      </div>
+
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+        {categories.map((item) => (
+          <a
+            key={item.name}
+            href="#"
+            className="overflow-hidden rounded-xl border border-line bg-white"
+          >
+            <img
+              src={item.image}
+              alt={item.name}
+              className="aspect-square w-full object-cover"
+            />
+            <p className="py-3 text-center text-sm font-medium text-cocoa">
+              {item.name}
+            </p>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default Categories;

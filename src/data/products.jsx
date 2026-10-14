@@ -1,0 +1,38 @@
+export const products = [
+  {
+    id: 1,
+    tag: "Made to Order",
+    image: "/images/willow-blanket.jpg",
+    maker: "The Willow Workshop",
+    name: "Willow Chunky Crochet Blanket",
+    price: 128,
+    note: "Made in 2-3 weeks",
+  },
+  {
+    id: 2,
+    tag: "Ready to Ship",
+    image: "/images/macrame-hanger.jpg",
+    maker: "Knot & Weave",
+    name: "Macramé Plant Hanger",
+    price: 38,
+    note: "Ships in 2-3 business days",
+  },
+  {
+    id: 3,
+    tag: "Ready to Ship",
+    image: "/images/sunflower-coasters.jpg",
+    maker: "Golden Thread Co.",
+    name: "Sunflower Coaster Set",
+    price: 26,
+    note: "Ships in 1-2 business days",
+  },
+  {
+    id: 4,
+    tag: "Made to Order",
+    image: "/images/amigurumi-bear.jpg",
+    maker: "Little Stitch Studio",
+    name: "Amigurumi Bear Plushie",
+    price: 48,
+    note: "Made in 1-2 weeks",
+  },
+];
