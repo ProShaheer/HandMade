@@ -36,6 +36,10 @@ function ProductView({ item }) {
   const [timeline, setTimeline] = useState(null);
   const [zip, setZip] = useState("");
   const [zipOk, setZipOk] = useState(true);
+  const [coords, setCoords] = useState(null);
+  const [place, setPlace] = useState("");
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState("");
 
   const checkTimeline = () => {
     if (!date) {
@@ -66,6 +70,55 @@ function ProductView({ item }) {
   };
 
   const verifyZip = () => setZipOk(zip.trim().length >= 4);
+
+  const detectLocation = () => {
+    if (!navigator.geolocation) {
+      setLocError("Your browser does not support location.");
+      return;
+    }
+
+    setLocating(true);
+    setLocError("");
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setCoords({ latitude, longitude });
+
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await res.json();
+          setPlace(
+            data.display_name ||
+              `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
+          );
+          if (data.address && data.address.postcode) {
+            setZip(data.address.postcode);
+            setZipOk(true);
+          }
+        } catch {
+          setPlace(`${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+        }
+
+        setLocating(false);
+      },
+      (error) => {
+        setLocating(false);
+        setLocError(
+          error.code === 1
+            ? "Location permission was denied. Allow it in the address bar and try again."
+            : "Could not find your location. Please try again."
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
+  const mapSrc = coords
+    ? `https://www.openstreetmap.org/export/embed.html?bbox=${coords.longitude - 0.004}%2C${coords.latitude - 0.002}%2C${coords.longitude + 0.004}%2C${coords.latitude + 0.002}&layer=mapnik&marker=${coords.latitude}%2C${coords.longitude}`
+    : "";
 
   const optionBox = (active) =>
     `flex w-full items-start gap-3 rounded-lg border-2 bg-white px-4 py-3 text-left transition ${
@@ -239,10 +292,15 @@ function ProductView({ item }) {
               <p className="text-sm font-semibold text-cocoa">
                 Delivery Serviceability
               </p>
-              <span className="flex items-center gap-1 text-xs font-medium text-cocoa">
+              <button
+                type="button"
+                onClick={detectLocation}
+                disabled={locating}
+                className="flex items-center gap-1 text-xs font-medium text-cocoa transition hover:text-brand disabled:opacity-60"
+              >
                 <MapPin size={12} />
-                Detect Location
-              </span>
+                {locating ? "Detecting..." : "Detect Location"}
+              </button>
             </div>
             <div className="mt-3 flex gap-2">
               <input
@@ -260,6 +318,34 @@ function ProductView({ item }) {
                 Verify
               </button>
             </div>
+
+            {locError && (
+              <p className="mt-3 text-xs font-medium text-red-700">
+                {locError}
+              </p>
+            )}
+
+            {coords && (
+              <div className="mt-3">
+                <p className="text-xs text-cocoa/60">Your location</p>
+                <p className="mt-0.5 text-sm font-medium text-cocoa">{place}</p>
+                <iframe
+                  title="Your location on the map"
+                  src={mapSrc}
+                  loading="lazy"
+                  className="mt-3 h-40 w-full rounded-lg border border-line"
+                />
+                <a
+                  href={`https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-block text-xs font-medium text-brand"
+                >
+                  Open in Maps
+                </a>
+              </div>
+            )}
+
             <div className="mt-3 space-y-2 text-xs">
               <div className="flex justify-between text-cocoa">
                 <span className="text-cocoa/60">Standard Courier Ground:</span>
