@@ -1,109 +1,368 @@
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { MapPin } from "lucide-react";
 import { products } from "../data/products";
+
+const PRODUCTION_DAYS = 21;
+
+const details = [
+  { label: "Materials", text: "[Materials provided by maker]" },
+  { label: "Dimensions", text: "[Approximate dimensions provided by maker]" },
+  { label: "Care Instructions", text: "[Care instructions provided by maker]" },
+];
+
+const reviews = [
+  {
+    tag: "Standard Construction",
+    text: "[Delivered-order review text and optional customer photos]",
+    photos: 2,
+  },
+  {
+    tag: "Child-Safety Construction",
+    text: "[Delivered-order review text]",
+    photos: 0,
+  },
+];
+
+const buttonClass =
+  "block w-full rounded-lg bg-[#7A5A45] py-3 text-center text-sm font-semibold text-white transition hover:opacity-90";
+
+function ProductView({ item }) {
+  const price = `$${item.price.toFixed(2)}`;
+
+  const [option, setOption] = useState("safety");
+  const [dateType, setDateType] = useState("text");
+  const [date, setDate] = useState("");
+  const [timeline, setTimeline] = useState(null);
+  const [zip, setZip] = useState("");
+  const [zipOk, setZipOk] = useState(true);
+
+  const checkTimeline = () => {
+    if (!date) {
+      setTimeline({ ok: false, text: "Please choose a date first." });
+      return;
+    }
+    const earliest = new Date();
+    earliest.setDate(earliest.getDate() + PRODUCTION_DAYS);
+    earliest.setHours(0, 0, 0, 0);
+    const wanted = new Date(`${date}T00:00:00`);
+    const earliestText = earliest.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    if (wanted >= earliest) {
+      setTimeline({
+        ok: true,
+        text: `Good news, this date works. Production takes about ${PRODUCTION_DAYS} days.`,
+      });
+    } else {
+      setTimeline({
+        ok: false,
+        text: `That date is too soon. The earliest estimate is ${earliestText}.`,
+      });
+    }
+  };
+
+  const verifyZip = () => setZipOk(zip.trim().length >= 4);
+
+  const optionBox = (active) =>
+    `flex w-full items-start gap-3 rounded-lg border-2 bg-white px-4 py-3 text-left transition ${
+      active ? "border-[#7A5A45]" : "border-line hover:border-[#7A5A45]/50"
+    }`;
+
+  const optionDot = (active) =>
+    `mt-1 h-3 w-3 shrink-0 rounded-full ${
+      active ? "bg-[#7A5A45]" : "border border-cocoa/30"
+    }`;
+
+  return (
+    <main className="mx-auto max-w-6xl px-6 py-6 md:py-8">
+      <div className="grid gap-6 md:grid-cols-2 md:grid-rows-[auto_1fr] md:items-start md:gap-x-8">
+        {/* PHOTOS (unchanged) */}
+        <div className="md:col-start-1 md:row-start-1">
+          <img
+            src={item.image}
+            alt={item.name}
+            className="aspect-4/3 w-full rounded-xl object-cover md:aspect-auto"
+          />
+          <div className="mt-2 grid grid-cols-4 gap-2 md:mt-3 md:grid-cols-3 md:gap-3">
+            {[1, 2, 3, 4].map((n) => (
+              <img
+                key={n}
+                src={item.image}
+                alt={`${item.name} view ${n}`}
+                className={`aspect-4/3 w-full rounded-lg object-cover ${
+                  n === 4 ? "md:hidden" : ""
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* DETAILS */}
+        <div className="md:col-start-2 md:row-span-2 md:row-start-1">
+          <p className="text-xs font-medium uppercase tracking-wide text-brand">
+            {item.maker}
+          </p>
+          <h1 className="mt-2 text-2xl font-bold leading-tight text-cocoa md:max-w-xs md:text-3xl">
+            {item.name}
+          </h1>
+          <p className="mt-2 text-xl font-semibold text-cocoa md:mt-3">
+            {price}
+          </p>
+
+          {/* Beige box */}
+          <div className="mt-5 rounded-lg bg-[#EBE1D5] p-4 md:mt-6">
+            <p className="text-sm font-semibold text-cocoa">
+              <span className="md:hidden">Produced after you order</span>
+              <span className="hidden md:inline">
+                Made to Order Production Commitment
+              </span>
+            </p>
+            <p className="mt-1 text-sm text-cocoa/70">
+              <span className="md:hidden">
+                Handmade after ordering. Queue takes 2-3 weeks. Slow craft
+                means zero waste.
+              </span>
+              <span className="hidden md:inline">
+                Produced sustainably after purchase. Expect 2-3 weeks
+                slow-craft assembly.
+              </span>
+            </p>
+          </div>
+
+          {/* Construction option */}
+          <p className="mt-5 text-sm font-semibold text-cocoa md:mt-6">
+            Construction Option
+          </p>
+
+          <div className="mt-2 space-y-2">
+            {/* Phone only */}
+            <button
+              type="button"
+              onClick={() => setOption("standard")}
+              className={`${optionBox(option === "standard")} md:hidden`}
+            >
+              <span className={optionDot(option === "standard")} />
+              <span>
+                <span className="block text-sm text-cocoa">
+                  Standard Decorative Weave
+                </span>
+                <span className="mt-0.5 block text-xs text-cocoa/60">
+                  Default loose, heavy weave ideal for adult spaces and
+                  styling.
+                </span>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setOption("safety")}
+              className={optionBox(option === "safety")}
+            >
+              <span className={`${optionDot(option === "safety")} md:mt-0`} />
+              <span className="flex-1 text-sm text-cocoa">
+                Child-Safety Reinforced Option
+              </span>
+              <span className="shrink-0 rounded bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700 md:hidden">
+                Recommended for Ages 0-3
+              </span>
+            </button>
+          </div>
+
+          {/* Phone only: child safety info */}
+          <div className="mt-4 rounded-lg border border-line bg-white p-4 md:hidden">
+            <p className="text-sm font-semibold text-cocoa">
+              Child-safety information
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-cocoa/60">
+              [Child-safety construction details and standard age range
+              provided by maker]
+            </p>
+            <p className="mt-2 text-xs font-medium text-brand">
+              [Material and supervision disclosures provided by maker]
+            </p>
+          </div>
+
+          {/* Occasion box */}
+          <div className="mt-4 rounded-xl border border-line bg-white p-4">
+            <p className="text-sm font-semibold text-cocoa">
+              <span className="md:hidden">Need this for an occasion?</span>
+              <span className="hidden md:inline">
+                Need this for a specific occasion?
+              </span>
+            </p>
+            <div className="mt-3 flex gap-2">
+              <input
+                type={dateType}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                onFocus={() => setDateType("date")}
+                onBlur={() => {
+                  if (!date) setDateType("text");
+                }}
+                placeholder="Enter date..."
+                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
+              />
+              <button
+                type="button"
+                onClick={checkTimeline}
+                className="whitespace-nowrap rounded-md bg-[#7A5A45] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
+              >
+                <span className="md:hidden">Verify</span>
+                <span className="hidden md:inline">Check Timeline</span>
+              </button>
+            </div>
+
+            {timeline && (
+              <p
+                className={`mt-3 text-xs font-medium ${
+                  timeline.ok ? "text-green-700" : "text-red-700"
+                }`}
+              >
+                {timeline.text}
+              </p>
+            )}
+
+            <p className="mt-3 flex gap-2 text-xs text-cocoa/60 md:hidden">
+              <span className="text-brand">▲</span>
+              Made-to-Order timeline requires approximately {PRODUCTION_DAYS}{" "}
+              days for production before transit.
+            </p>
+          </div>
+
+          {/* Phone only: delivery */}
+          <div className="mt-4 rounded-xl border border-line bg-white p-4 md:hidden">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold text-cocoa">
+                Delivery Serviceability
+              </p>
+              <span className="flex items-center gap-1 text-xs font-medium text-cocoa">
+                <MapPin size={12} />
+                Detect Location
+              </span>
+            </div>
+            <div className="mt-3 flex gap-2">
+              <input
+                type="text"
+                value={zip}
+                onChange={(e) => setZip(e.target.value)}
+                placeholder="Enter Postal / ZIP Code..."
+                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
+              />
+              <button
+                type="button"
+                onClick={verifyZip}
+                className="rounded-md border border-[#7A5A45] bg-white px-4 py-2 text-sm font-medium text-cocoa transition hover:bg-cream"
+              >
+                Verify
+              </button>
+            </div>
+            <div className="mt-3 space-y-2 text-xs">
+              <div className="flex justify-between text-cocoa">
+                <span className="text-cocoa/60">Standard Courier Ground:</span>
+                <span className="font-medium">$12.00</span>
+              </div>
+              <div className="flex items-center justify-between text-cocoa">
+                <span className="text-cocoa/60">Serviceability</span>
+                {zipOk ? (
+                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">
+                    Eligible
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-medium text-red-700">
+                    Enter a valid code
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Tablet and up: main button */}
+          <Link to="/cart" className={`mt-4 hidden md:block ${buttonClass}`}>
+            Commission This Piece ({price})
+          </Link>
+
+          {/* Phone only: materials, dimensions, care */}
+          <div className="mt-6 space-y-4 md:hidden">
+            {details.map((row) => (
+              <div key={row.label}>
+                <p className="text-sm font-semibold text-cocoa">{row.label}</p>
+                <p className="mt-1 text-sm text-cocoa/60">{row.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ARTISAN */}
+        <div className="rounded-xl border border-line bg-white p-4 md:col-start-1 md:row-start-2">
+          <p className="text-xs font-medium uppercase tracking-wide text-brand">
+            <span className="md:hidden">The artisan</span>
+            <span className="hidden md:inline">The artisan behind the craft</span>
+          </p>
+          <div className="mt-3 flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white">
+              {item.maker[0]}
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-cocoa">{item.maker}</p>
+              <p className="text-xs text-cocoa/60">Portland, Oregon</p>
+            </div>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-cocoa/70 md:hidden">
+            Every piece on Handmade is created by an independent artisan or
+            small craft business. No factories, no mass production — just
+            skilled hands, quality materials, and a story behind each stitch.
+          </p>
+        </div>
+      </div>
+
+      {/* Phone only: reviews and button */}
+      <div className="mt-8 md:hidden">
+        <h2 className="text-xl font-bold text-cocoa">Delivered-Order Reviews</h2>
+
+        <div className="mt-4 divide-y divide-line">
+          {reviews.map((review) => (
+            <div key={review.tag} className="py-4 first:pt-0">
+              <p className="text-sm font-semibold text-cocoa">
+                Verified delivered customer
+              </p>
+              <p className="mt-0.5 text-xs text-cocoa/60">[Review date]</p>
+              <span className="mt-2 inline-block rounded bg-[#F1E9DD] px-2 py-1 text-[11px] text-cocoa/70">
+                {review.tag}
+              </span>
+              <p className="mt-2 text-sm text-cocoa/70">{review.text}</p>
+              {review.photos > 0 && (
+                <div className="mt-3 flex gap-2">
+                  {Array.from({ length: review.photos }).map((_, index) => (
+                    <img
+                      key={index}
+                      src={item.image}
+                      alt="Customer photo"
+                      className="h-20 w-24 rounded-md object-cover"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <Link to="/cart" className={`mt-2 ${buttonClass}`}>
+          Add to Cart ({price})
+        </Link>
+      </div>
+    </main>
+  );
+}
 
 function Product() {
   const { id } = useParams();
   const item = products.find((p) => p.id === Number(id)) || products[0];
 
-  return (
-    <main className="mx-auto max-w-6xl px-6 py-8">
-      <div className="grid gap-8 md:grid-cols-2">
-     
-        <div>
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full rounded-xl object-cover"
-          />
-
-          <div className="mt-3 grid grid-cols-3 gap-3">
-            <img
-              src={item.image}
-              alt={`${item.name} view 1`}
-              className="aspect-4/3 w-full rounded-lg object-cover"
-            />
-            <img
-              src={item.image}
-              alt={`${item.name} view 2`}
-              className="aspect-4/3 w-full rounded-lg object-cover"
-            />
-            <img
-              src={item.image}
-              alt={`${item.name} view 3`}
-              className="aspect-4/3 w-full rounded-lg object-cover"
-            />
-          </div>
-
-          <div className="mt-4 rounded-xl border border-line bg-white p-4">
-            <p className="text-xs font-medium uppercase tracking-wide text-brand">
-              The artisan behind the craft
-            </p>
-            <div className="mt-3 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white">
-                {item.maker[0]}
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-cocoa">{item.maker}</p>
-                <p className="text-xs text-cocoa/60">Portland, Oregon</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-brand">
-            {item.maker}
-          </p>
-          <h1 className="mt-2 max-w-xs text-3xl font-bold leading-tight text-cocoa">
-            {item.name}
-          </h1>
-          <p className="mt-3 text-xl font-semibold text-cocoa">
-            ${item.price.toFixed(2)}
-          </p>
-
-          <div className="mt-6 rounded-lg bg-[#EBE1D5] p-4">
-            <p className="text-sm font-semibold text-cocoa">
-              Made to Order Production Commitment
-            </p>
-            <p className="mt-1 text-sm text-cocoa/70">
-              Produced sustainably after purchase. Expect 2-3 weeks slow-craft
-              assembly.
-            </p>
-          </div>
-
-          <p className="mt-6 text-sm font-semibold text-cocoa">
-            Construction Option
-          </p>
-          <div className="mt-2 flex items-center gap-3 rounded-lg border-2 border-[#7A5A45] bg-white px-4 py-3">
-            <span className="h-3 w-3 rounded-full bg-[#7A5A45]" />
-            <span className="text-sm text-cocoa">
-              Child-Safety Reinforced Option
-            </span>
-          </div>
-
-          <div className="mt-4 rounded-xl border border-line bg-white p-4">
-            <p className="text-sm font-semibold text-cocoa">
-              Need this for a specific occasion?
-            </p>
-            <div className="mt-3 flex gap-2">
-              <input
-                type="text"
-                placeholder="Enter date..."
-                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
-              />
-              <button className="whitespace-nowrap rounded-md bg-[#7A5A45] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">
-                Check Timeline
-              </button>
-            </div>
-          </div>
-
-          <button className="mt-4 w-full rounded-lg bg-[#7A5A45] py-3 text-sm font-semibold text-white transition hover:opacity-90">
-            Commission This Piece (${item.price.toFixed(2)})
-          </button>
-        </div>
-      </div>
-    </main>
-  );
+  return <ProductView key={item.id} item={item} />;
 }
 
 export default Product;

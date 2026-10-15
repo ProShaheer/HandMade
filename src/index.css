@@ -8,3 +8,9 @@
   --color-cocoa: #2e2118;
   --color-line: #e8e0d7;
 }
+
+@media (min-width: 768px) {
+  html {
+    font-size: 112.5%;
+  }
+}
