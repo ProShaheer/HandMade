@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 import searchIcon from "../assets/icons/search.svg";
 import ProductCard from "../Components/ProductCard";
@@ -10,11 +11,21 @@ const statuses = [
   { label: "Made to Order (Custom)", value: "Made to Order" },
 ];
 
+const fromUrl = {
+  "made-to-order": "Made to Order",
+  "ready-to-ship": "Ready to Ship",
+};
+
 function Shop() {
-  const [status, setStatus] = useState("All");
+  const [params] = useSearchParams();
+  const [status, setStatus] = useState(fromUrl[params.get("status")] || "All");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("Featured");
   const [filtersOpen, setFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    setStatus(fromUrl[params.get("status")] || "All");
+  }, [params]);
 
   const visible = products
     .filter((p) => status === "All" || p.tag === status)
@@ -32,7 +43,6 @@ function Shop() {
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-8">
-     
       <button
         onClick={() => setFiltersOpen(!filtersOpen)}
         className="mb-4 flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-medium text-cocoa transition hover:border-brand md:hidden"
@@ -42,7 +52,6 @@ function Shop() {
       </button>
 
       <div className="grid gap-6 md:grid-cols-[230px_1fr]">
-       
         <aside
           className={`h-fit rounded-xl border border-line bg-white p-5 ${
             filtersOpen ? "block" : "hidden"
@@ -81,9 +90,7 @@ function Shop() {
           </div>
         </aside>
 
-     
         <section>
-         
           <div className="flex items-center gap-3 rounded-lg border border-line bg-white px-4 py-3 transition focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/20">
             <img src={searchIcon} alt="" className="h-4 w-4" />
             <input
@@ -95,7 +102,6 @@ function Shop() {
             />
           </div>
 
-         
           <div className="mt-4 flex items-center justify-between text-sm text-cocoa/70">
             <p>
               Showing {visible.length} items in "
@@ -115,11 +121,10 @@ function Shop() {
             </label>
           </div>
 
-        
           {visible.length > 0 ? (
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {visible.map((item) => (
-                <ProductCard key={item.name} item={item} />
+                <ProductCard key={item.id} item={item} />
               ))}
             </div>
           ) : (

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import heroImg from "../assets/icons/Hero.jpg";
 
 function Hero() {
@@ -26,12 +27,18 @@ function Hero() {
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <button className="rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white">
+          <Link
+            to="/shop"
+            className="rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
+          >
             Explore Collection
-          </button>
-          <button className="rounded-lg border border-white/70 px-6 py-3 text-sm font-medium text-white">
+          </Link>
+          <Link
+            to="/shop?status=made-to-order"
+            className="rounded-lg border border-white/70 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+          >
             Discover Made-to-Order
-          </button>
+          </Link>
         </div>
       </div>
     </section>
