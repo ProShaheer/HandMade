@@ -11,12 +11,12 @@ function Hero() {
 
       <div className="absolute inset-0 -z-10 bg-black/40" />
 
-      <div className="mx-auto flex min-h-[360px] max-w-6xl flex-col items-center justify-center px-6 py-12 text-center md:min-h-[420px]">
+      <div className="mx-auto flex min-h-[clamp(480px,calc(100vh-5rem),820px)] max-w-6xl flex-col items-center justify-center px-6 py-16 text-center">
         <span className="rounded-full border border-white/40 px-4 py-1 text-xs uppercase tracking-wide text-white">
           Made by independent makers
         </span>
 
-        <h1 className="mt-5 max-w-2xl text-3xl font-bold leading-tight text-white md:text-4xl">
+        <h1 className="mt-6 max-w-2xl text-3xl font-bold leading-tight text-white md:text-5xl">
           Beautiful things, made by hand — and made for you.
         </h1>
 
@@ -25,7 +25,7 @@ function Hero() {
           talented independent artisans.
         </p>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button className="rounded-lg bg-brand px-6 py-3 text-sm font-medium text-white">
             Explore Collection
           </button>

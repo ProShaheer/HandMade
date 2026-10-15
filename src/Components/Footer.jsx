@@ -1,20 +1,35 @@
+import { Link } from "react-router-dom";
 import homeLogo from "../assets/icons/homelogo.svg";
 
 const columns = [
-  { title: "Shop", links: ["Shop All", "Crochet", "Home Decor"] },
-  { title: "Support", links: ["Ready to Ship", "Made to Order", "Contact"] },
+  {
+    title: "Shop",
+    links: [
+      { label: "Shop All", to: "/shop" },
+      { label: "Crochet", to: "/shop" },
+      { label: "Home Decor", to: "/shop" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { label: "Ready to Ship", to: "/shop?status=ready-to-ship" },
+      { label: "Made to Order", to: "/shop?status=made-to-order" },
+      { label: "Contact", to: "/" },
+    ],
+  },
 ];
 
 function Footer() {
   return (
     <footer className="w-full bg-cocoa text-white">
-      <div className="mx-auto max-w-6xl px-6 py-8">
+      <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="grid gap-8 md:grid-cols-[2fr_1fr_1fr]">
           <div>
-            <a href="#" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <img src={homeLogo} alt="Handmade logo" className="h-7 w-7" />
               <span className="text-base font-semibold">Handmade</span>
-            </a>
+            </Link>
             <p className="mt-3 max-w-xs text-xs leading-relaxed text-white/70">
               An artisan marketplace for goods made by independent makers.
               Every piece is crafted by hand — ready to ship or made to order
@@ -27,8 +42,13 @@ function Footer() {
               <h4 className="text-sm font-semibold">{column.title}</h4>
               <ul className="mt-3 space-y-2 text-xs text-white/70">
                 {column.links.map((link) => (
-                  <li key={link}>
-                    <a href="#">{link}</a>
+                  <li key={link.label}>
+                    <Link
+                      to={link.to}
+                      className="transition hover:text-white"
+                    >
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>

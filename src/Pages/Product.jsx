@@ -8,7 +8,7 @@ function Product() {
   return (
     <main className="mx-auto max-w-6xl px-6 py-8">
       <div className="grid gap-8 md:grid-cols-2">
-        {/* LEFT COLUMN */}
+     
         <div>
           <img
             src={item.image}
@@ -50,7 +50,6 @@ function Product() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN */}
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-brand">
             {item.maker}

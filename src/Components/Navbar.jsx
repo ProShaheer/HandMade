@@ -20,11 +20,11 @@ function Navbar() {
     <header className="w-full border-b border-line bg-white">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <Link to="/" className="flex items-center gap-2">
-          <img src={homeLogo} alt="Handmade logo" className="h-7 w-7" />
-          <span className="text-base font-semibold text-cocoa">Handmade</span>
+          <img src={homeLogo} alt="Handmade logo" className="h-9 w-9" />
+          <span className="text-2xl font-semibold text-cocoa">Handmade</span>
         </Link>
 
-        <ul className="hidden items-center gap-5 text-[13px] text-cocoa md:flex">
+        <ul className="hidden items-center gap-5 text-[16px] text-cocoa md:flex">
           {links.map((link) => (
             <li key={link.label}>
               <Link to={link.to}>{link.label}</Link>
