@@ -22,9 +22,9 @@ const columns = [
 
 function Footer() {
   return (
-    <footer className="w-full bg-cocoa text-white">
+    <footer className="w-full bg-[#35261D] text-white">
       <div className="mx-auto max-w-6xl px-6 py-10">
-        <div className="grid gap-8 md:grid-cols-[2fr_1fr_1fr]">
+        <div className="grid gap-25 md:grid-cols-[2fr_1fr_1fr]">
           <div>
             <Link to="/" className="flex items-center gap-2">
               <img src={homeLogo} alt="Handmade logo" className="h-7 w-7" />
