@@ -33,7 +33,7 @@ function Categories() {
             <img
               src={item.image}
               alt={item.name}
-              className="aspect-square w-full object-cover"
+             className="aspect-5/6 w-full object-cover"
             />
             <p className="py-3 text-center text-sm font-medium text-cocoa">
               {item.name}

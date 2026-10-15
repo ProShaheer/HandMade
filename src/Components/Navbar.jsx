@@ -13,6 +13,12 @@ const links = [
   { label: "Journal", to: "/#journal" },
 ];
 
+const icons = [
+  { label: "Search", src: searchIcon, to: "/shop?focus=search" },
+  { label: "Account", src: userIcon, to: "/account" },
+  { label: "Shopping cart", src: cartIcon, to: "/cart" },
+];
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,8 +26,8 @@ function Navbar() {
     <header className="w-full border-b border-line bg-white">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
         <Link to="/" className="flex items-center gap-2">
-          <img src={homeLogo} alt="Handmade logo" className="h-9 w-9" />
-          <span className="text-2xl font-semibold text-cocoa">Handmade</span>
+          <img src={homeLogo} alt="Handmade logo" className="h-8 w-8" />
+          <span className="text-xl font-semibold text-cocoa">Handmade</span>
         </Link>
 
         <ul className="hidden items-center gap-5 text-[16px] text-cocoa md:flex">
@@ -33,9 +39,16 @@ function Navbar() {
         </ul>
 
         <div className="flex items-center gap-4">
-          <img src={searchIcon} alt="Search" className="h-4 w-4" />
-          <img src={userIcon} alt="Account" className="h-4 w-4" />
-          <img src={cartIcon} alt="Shopping cart" className="h-4 w-4" />
+          {icons.map((icon) => (
+            <Link
+              key={icon.label}
+              to={icon.to}
+              aria-label={icon.label}
+              className="transition hover:opacity-60"
+            >
+              <img src={icon.src} alt="" className="h-4 w-4" />
+            </Link>
+          ))}
 
           <button
             className="text-cocoa md:hidden"

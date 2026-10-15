@@ -98,6 +98,7 @@ function Shop() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search artisan crafts..."
+              autoFocus={params.get("focus") === "search"}
               className="w-full bg-transparent text-sm text-cocoa outline-none placeholder:text-cocoa/50"
             />
           </div>
