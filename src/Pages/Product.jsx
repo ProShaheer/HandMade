@@ -25,7 +25,7 @@ const reviews = [
 ];
 
 const buttonClass =
-  "block w-full rounded-lg bg-[#7A5A45] py-3 text-center text-sm font-semibold text-white transition hover:opacity-90";
+  "block w-full rounded-lg bg-[#7A5A45] py-3 text-center text-sm lg:text-base font-semibold text-white transition hover:opacity-90";
 
 function ProductView({ item }) {
   const price = `$${item.price.toFixed(2)}`;
@@ -36,6 +36,10 @@ function ProductView({ item }) {
   const [timeline, setTimeline] = useState(null);
   const [zip, setZip] = useState("");
   const [zipOk, setZipOk] = useState(true);
+  const [coords, setCoords] = useState(null);
+  const [place, setPlace] = useState("");
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState("");
 
   const checkTimeline = () => {
     if (!date) {
@@ -67,6 +71,55 @@ function ProductView({ item }) {
 
   const verifyZip = () => setZipOk(zip.trim().length >= 4);
 
+  const detectLocation = () => {
+    if (!navigator.geolocation) {
+      setLocError("Your browser does not support location.");
+      return;
+    }
+
+    setLocating(true);
+    setLocError("");
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setCoords({ latitude, longitude });
+
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
+          );
+          const data = await res.json();
+          setPlace(
+            data.display_name ||
+              `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`,
+          );
+          if (data.address && data.address.postcode) {
+            setZip(data.address.postcode);
+            setZipOk(true);
+          }
+        } catch {
+          setPlace(`${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+        }
+
+        setLocating(false);
+      },
+      (error) => {
+        setLocating(false);
+        setLocError(
+          error.code === 1
+            ? "Location permission was denied. Allow it in the address bar and try again."
+            : "Could not find your location. Please try again.",
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  };
+
+  const mapSrc = coords
+    ? `https://www.openstreetmap.org/export/embed.html?bbox=${coords.longitude - 0.004}%2C${coords.latitude - 0.002}%2C${coords.longitude + 0.004}%2C${coords.latitude + 0.002}&layer=mapnik&marker=${coords.latitude}%2C${coords.longitude}`
+    : "";
+
   const optionBox = (active) =>
     `flex w-full items-start gap-3 rounded-lg border-2 bg-white px-4 py-3 text-left transition ${
       active ? "border-[#7A5A45]" : "border-line hover:border-[#7A5A45]/50"
@@ -78,14 +131,14 @@ function ProductView({ item }) {
     }`;
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-6 md:py-8">
+    <main className="mx-auto max-w-6xl px-6 md:px-10 py-6 md:py-8">
       <div className="grid gap-6 md:grid-cols-2 md:grid-rows-[auto_1fr] md:items-start md:gap-x-8">
-        {/* PHOTOS (unchanged) */}
+      
         <div className="md:col-start-1 md:row-start-1">
           <img
             src={item.image}
             alt={item.name}
-            className="aspect-4/3 w-full rounded-xl object-cover md:aspect-auto"
+            className="aspect-4/3 w-full rounded-xl object-cover md:aspect-4/3"
           />
           <div className="mt-2 grid grid-cols-4 gap-2 md:mt-3 md:grid-cols-3 md:gap-3">
             {[1, 2, 3, 4].map((n) => (
@@ -93,7 +146,7 @@ function ProductView({ item }) {
                 key={n}
                 src={item.image}
                 alt={`${item.name} view ${n}`}
-                className={`aspect-4/3 w-full rounded-lg object-cover ${
+                className={`aspect-4/3 w-full rounded-lg object-cover md:aspect-7/5 ${
                   n === 4 ? "md:hidden" : ""
                 }`}
               />
@@ -101,9 +154,9 @@ function ProductView({ item }) {
           </div>
         </div>
 
-        {/* DETAILS */}
+        
         <div className="md:col-start-2 md:row-span-2 md:row-start-1">
-          <p className="text-xs font-medium uppercase tracking-wide text-brand">
+          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-brand">
             {item.maker}
           </p>
           <h1 className="mt-2 text-2xl font-bold leading-tight text-cocoa md:max-w-xs md:text-3xl">
@@ -113,33 +166,33 @@ function ProductView({ item }) {
             {price}
           </p>
 
-          {/* Beige box */}
+          
           <div className="mt-5 rounded-lg bg-[#EBE1D5] p-4 md:mt-6">
-            <p className="text-sm font-semibold text-cocoa">
+            <p className="text-sm lg:text-base font-semibold text-cocoa">
               <span className="md:hidden">Produced after you order</span>
               <span className="hidden md:inline">
                 Made to Order Production Commitment
               </span>
             </p>
-            <p className="mt-1 text-sm text-cocoa/70">
+            <p className="mt-1 text-sm lg:text-base text-cocoa/70">
               <span className="md:hidden">
-                Handmade after ordering. Queue takes 2-3 weeks. Slow craft
-                means zero waste.
+                Handmade after ordering. Queue takes 2-3 weeks. Slow craft means
+                zero waste.
               </span>
               <span className="hidden md:inline">
-                Produced sustainably after purchase. Expect 2-3 weeks
-                slow-craft assembly.
+                Produced sustainably after purchase. Expect 2-3 weeks slow-craft
+                assembly.
               </span>
             </p>
           </div>
 
-          {/* Construction option */}
-          <p className="mt-5 text-sm font-semibold text-cocoa md:mt-6">
+         
+          <p className="mt-5 text-sm lg:text-base font-semibold text-cocoa md:mt-6">
             Construction Option
           </p>
 
           <div className="mt-2 space-y-2">
-            {/* Phone only */}
+          
             <button
               type="button"
               onClick={() => setOption("standard")}
@@ -147,12 +200,11 @@ function ProductView({ item }) {
             >
               <span className={optionDot(option === "standard")} />
               <span>
-                <span className="block text-sm text-cocoa">
+                <span className="block text-sm lg:text-base text-cocoa">
                   Standard Decorative Weave
                 </span>
-                <span className="mt-0.5 block text-xs text-cocoa/60">
-                  Default loose, heavy weave ideal for adult spaces and
-                  styling.
+                <span className="mt-0.5 block text-xs lg:text-sm text-cocoa/60">
+                  Default loose, heavy weave ideal for adult spaces and styling.
                 </span>
               </span>
             </button>
@@ -163,7 +215,7 @@ function ProductView({ item }) {
               className={optionBox(option === "safety")}
             >
               <span className={`${optionDot(option === "safety")} md:mt-0`} />
-              <span className="flex-1 text-sm text-cocoa">
+              <span className="flex-1 text-sm lg:text-base text-cocoa">
                 Child-Safety Reinforced Option
               </span>
               <span className="shrink-0 rounded bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700 md:hidden">
@@ -172,23 +224,23 @@ function ProductView({ item }) {
             </button>
           </div>
 
-          {/* Phone only: child safety info */}
+        
           <div className="mt-4 rounded-lg border border-line bg-white p-4 md:hidden">
-            <p className="text-sm font-semibold text-cocoa">
+            <p className="text-sm lg:text-base font-semibold text-cocoa">
               Child-safety information
             </p>
-            <p className="mt-2 text-xs leading-relaxed text-cocoa/60">
-              [Child-safety construction details and standard age range
-              provided by maker]
+            <p className="mt-2 text-xs lg:text-sm leading-relaxed text-cocoa/60">
+              [Child-safety construction details and standard age range provided
+              by maker]
             </p>
-            <p className="mt-2 text-xs font-medium text-brand">
+            <p className="mt-2 text-xs lg:text-sm font-medium text-brand">
               [Material and supervision disclosures provided by maker]
             </p>
           </div>
 
-          {/* Occasion box */}
+        
           <div className="mt-4 rounded-xl border border-line bg-white p-4">
-            <p className="text-sm font-semibold text-cocoa">
+            <p className="text-sm lg:text-base font-semibold text-cocoa">
               <span className="md:hidden">Need this for an occasion?</span>
               <span className="hidden md:inline">
                 Need this for a specific occasion?
@@ -204,12 +256,12 @@ function ProductView({ item }) {
                   if (!date) setDateType("text");
                 }}
                 placeholder="Enter date..."
-                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
+                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
               />
               <button
                 type="button"
                 onClick={checkTimeline}
-                className="whitespace-nowrap rounded-md bg-[#7A5A45] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
+                className="whitespace-nowrap rounded-md bg-[#7A5A45] px-4 py-2 text-sm lg:text-base font-medium text-white transition hover:opacity-90"
               >
                 <span className="md:hidden">Verify</span>
                 <span className="hidden md:inline">Check Timeline</span>
@@ -218,7 +270,7 @@ function ProductView({ item }) {
 
             {timeline && (
               <p
-                className={`mt-3 text-xs font-medium ${
+                className={`mt-3 text-xs lg:text-sm font-medium ${
                   timeline.ok ? "text-green-700" : "text-red-700"
                 }`}
               >
@@ -226,23 +278,30 @@ function ProductView({ item }) {
               </p>
             )}
 
-            <p className="mt-3 flex gap-2 text-xs text-cocoa/60 md:hidden">
+            <p className="mt-3 flex gap-2 text-xs lg:text-sm text-cocoa/60 md:hidden">
               <span className="text-brand">▲</span>
-              Made-to-Order timeline requires approximately {PRODUCTION_DAYS}{" "}
+              Made-to-Order timeline requires approximately {
+                PRODUCTION_DAYS
+              }{" "}
               days for production before transit.
             </p>
           </div>
 
-          {/* Phone only: delivery */}
+        
           <div className="mt-4 rounded-xl border border-line bg-white p-4 md:hidden">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-cocoa">
+              <p className="text-sm lg:text-base font-semibold text-cocoa">
                 Delivery Serviceability
               </p>
-              <span className="flex items-center gap-1 text-xs font-medium text-cocoa">
+              <button
+                type="button"
+                onClick={detectLocation}
+                disabled={locating}
+                className="flex items-center gap-1 text-xs lg:text-sm font-medium text-cocoa transition hover:text-brand disabled:opacity-60"
+              >
                 <MapPin size={12} />
-                Detect Location
-              </span>
+                {locating ? "Detecting..." : "Detect Location"}
+              </button>
             </div>
             <div className="mt-3 flex gap-2">
               <input
@@ -250,17 +309,45 @@ function ProductView({ item }) {
                 value={zip}
                 onChange={(e) => setZip(e.target.value)}
                 placeholder="Enter Postal / ZIP Code..."
-                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
+                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
               />
               <button
                 type="button"
                 onClick={verifyZip}
-                className="rounded-md border border-[#7A5A45] bg-white px-4 py-2 text-sm font-medium text-cocoa transition hover:bg-cream"
+                className="rounded-md border border-[#7A5A45] bg-white px-4 py-2 text-sm lg:text-base font-medium text-cocoa transition hover:bg-cream"
               >
                 Verify
               </button>
             </div>
-            <div className="mt-3 space-y-2 text-xs">
+
+            {locError && (
+              <p className="mt-3 text-xs lg:text-sm font-medium text-red-700">
+                {locError}
+              </p>
+            )}
+
+            {coords && (
+              <div className="mt-3">
+                <p className="text-xs lg:text-sm text-cocoa/60">Your location</p>
+                <p className="mt-0.5 text-sm lg:text-base font-medium text-cocoa">{place}</p>
+                <iframe
+                  title="Your location on the map"
+                  src={mapSrc}
+                  loading="lazy"
+                  className="mt-3 h-40 w-full rounded-lg border border-line"
+                />
+                <a
+                  href={`https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-block text-xs lg:text-sm font-medium text-brand"
+                >
+                  Open in Maps
+                </a>
+              </div>
+            )}
+
+            <div className="mt-3 space-y-2 text-xs lg:text-sm">
               <div className="flex justify-between text-cocoa">
                 <span className="text-cocoa/60">Standard Courier Ground:</span>
                 <span className="font-medium">$12.00</span>
@@ -280,38 +367,40 @@ function ProductView({ item }) {
             </div>
           </div>
 
-          {/* Tablet and up: main button */}
+         
           <Link to="/cart" className={`mt-4 hidden md:block ${buttonClass}`}>
             Commission This Piece ({price})
           </Link>
 
-          {/* Phone only: materials, dimensions, care */}
+          
           <div className="mt-6 space-y-4 md:hidden">
             {details.map((row) => (
               <div key={row.label}>
-                <p className="text-sm font-semibold text-cocoa">{row.label}</p>
-                <p className="mt-1 text-sm text-cocoa/60">{row.text}</p>
+                <p className="text-sm lg:text-base font-semibold text-cocoa">{row.label}</p>
+                <p className="mt-1 text-sm lg:text-base text-cocoa/60">{row.text}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ARTISAN */}
+       
         <div className="rounded-xl border border-line bg-white p-4 md:col-start-1 md:row-start-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-brand">
+          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-brand">
             <span className="md:hidden">The artisan</span>
-            <span className="hidden md:inline">The artisan behind the craft</span>
+            <span className="hidden md:inline">
+              The artisan behind the craft
+            </span>
           </p>
           <div className="mt-3 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm lg:text-base font-semibold text-white">
               {item.maker[0]}
             </div>
             <div>
-              <p className="text-sm font-semibold text-cocoa">{item.maker}</p>
-              <p className="text-xs text-cocoa/60">Portland, Oregon</p>
+              <p className="text-sm lg:text-base font-semibold text-cocoa">{item.maker}</p>
+              <p className="text-xs lg:text-sm text-cocoa/60">Portland, Oregon</p>
             </div>
           </div>
-          <p className="mt-3 text-sm leading-relaxed text-cocoa/70 md:hidden">
+          <p className="mt-3 text-sm lg:text-base leading-relaxed text-cocoa/70 md:hidden">
             Every piece on Handmade is created by an independent artisan or
             small craft business. No factories, no mass production — just
             skilled hands, quality materials, and a story behind each stitch.
@@ -319,21 +408,23 @@ function ProductView({ item }) {
         </div>
       </div>
 
-      {/* Phone only: reviews and button */}
+      
       <div className="mt-8 md:hidden">
-        <h2 className="text-xl font-bold text-cocoa">Delivered-Order Reviews</h2>
+        <h2 className="text-xl font-bold text-cocoa">
+          Delivered-Order Reviews
+        </h2>
 
         <div className="mt-4 divide-y divide-line">
           {reviews.map((review) => (
             <div key={review.tag} className="py-4 first:pt-0">
-              <p className="text-sm font-semibold text-cocoa">
+              <p className="text-sm lg:text-base font-semibold text-cocoa">
                 Verified delivered customer
               </p>
-              <p className="mt-0.5 text-xs text-cocoa/60">[Review date]</p>
+              <p className="mt-0.5 text-xs lg:text-sm text-cocoa/60">[Review date]</p>
               <span className="mt-2 inline-block rounded bg-[#F1E9DD] px-2 py-1 text-[11px] text-cocoa/70">
                 {review.tag}
               </span>
-              <p className="mt-2 text-sm text-cocoa/70">{review.text}</p>
+              <p className="mt-2 text-sm lg:text-base text-cocoa/70">{review.text}</p>
               {review.photos > 0 && (
                 <div className="mt-3 flex gap-2">
                   {Array.from({ length: review.photos }).map((_, index) => (

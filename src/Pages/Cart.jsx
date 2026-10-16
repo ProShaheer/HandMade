@@ -10,7 +10,7 @@ import {
 
 function Cart() {
   return (
-    <main className="mx-auto max-w-6xl px-6 py-6 md:py-10">
+    <main className="mx-auto max-w-6xl px-6 md:px-10 py-6 md:py-10">
       <h1 className="text-lg font-bold text-cocoa md:text-2xl">
         Your Shopping Bag ({cartItems.length})
       </h1>
@@ -29,13 +29,13 @@ function Cart() {
                   className="h-14 w-14 rounded-md object-cover"
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-cocoa">
+                  <p className="truncate text-sm lg:text-base font-semibold text-cocoa">
                     {item.name}
                   </p>
-                  <p className="text-xs text-cocoa/60">
+                  <p className="text-xs lg:text-sm text-cocoa/60">
                     {cartDetails[item.id]}
                   </p>
-                  <p className="mt-1 text-sm font-semibold text-cocoa">
+                  <p className="mt-1 text-sm lg:text-base font-semibold text-cocoa">
                     {money(item.price)}
                   </p>
                 </div>
@@ -44,10 +44,10 @@ function Cart() {
           </ul>
 
           <div className="rounded-lg border border-red-200 bg-red-50 p-3">
-            <p className="text-xs font-semibold text-red-800">
+            <p className="text-xs lg:text-sm font-semibold text-red-800">
               Honest Need-by Warning
             </p>
-            <p className="mt-1 text-xs leading-relaxed text-red-700">
+            <p className="mt-1 text-xs lg:text-sm leading-relaxed text-red-700">
               Made-to-Order items require a minimum of 2 weeks slow assembly.
               Please adjust occasion expectations accordingly.
             </p>
@@ -55,7 +55,7 @@ function Cart() {
         </div>
 
         <div className="rounded-lg border border-line bg-white p-4">
-          <div className="space-y-2 text-sm text-cocoa">
+          <div className="space-y-2 text-sm lg:text-base text-cocoa">
             <div className="flex justify-between">
               <span className="text-cocoa/70">Subtotal</span>
               <span className="font-medium">{money(subtotal)}</span>
@@ -65,19 +65,19 @@ function Cart() {
               <span className="font-medium">{money(shipping)}</span>
             </div>
           </div>
-          <div className="mt-3 flex justify-between border-t border-line pt-3 text-sm font-bold text-cocoa">
+          <div className="mt-3 flex justify-between border-t border-line pt-3 text-sm lg:text-base font-bold text-cocoa">
             <span>Total</span>
             <span>{money(total)}</span>
           </div>
           <Link
             to="/checkout"
-            className="mt-4 block w-full rounded-lg bg-[#7A5A45] py-3 text-center text-sm font-semibold text-white transition hover:opacity-90"
+            className="mt-4 block w-full rounded-lg bg-[#7A5A45] py-3 text-center text-sm lg:text-base font-semibold text-white transition hover:opacity-90"
           >
             Proceed to Checkout
           </Link>
           <Link
             to="/shop"
-            className="mt-3 block text-center text-xs text-cocoa/70 transition hover:text-brand"
+            className="mt-3 block text-center text-xs lg:text-sm text-cocoa/70 transition hover:text-brand"
           >
             Continue shopping
           </Link>

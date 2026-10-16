@@ -8,17 +8,17 @@ const categories = [
 
 function Categories() {
   return (
-    <section id="categories" className="mx-auto max-w-6xl px-6 py-10">
+    <section id="categories" className="mx-auto max-w-6xl px-6 md:px-10 py-10">
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-brand">
+          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-brand">
             Shop by craft
           </p>
           <h2 className="mt-1 text-2xl font-bold text-cocoa md:text-3xl">
             Find your favorite makers
           </h2>
         </div>
-        <a href="#" className="text-sm text-cocoa">
+        <a href="#" className="text-sm lg:text-base text-cocoa">
           Shop all categories
         </a>
       </div>
@@ -33,9 +33,9 @@ function Categories() {
             <img
               src={item.image}
               alt={item.name}
-             className="aspect-5/6 w-full object-cover"
+              className="aspect-5/6 w-full object-cover"
             />
-            <p className="py-3 text-center text-sm font-medium text-cocoa">
+            <p className="py-3 text-center text-sm lg:text-base font-medium text-cocoa">
               {item.name}
             </p>
           </a>
