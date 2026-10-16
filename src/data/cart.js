@@ -7,9 +7,7 @@ export const cartDetails = {
   2: "Ready to Ship (2-3 days)",
 };
 
-export const cartItems = cartIds.map((id) =>
-  products.find((p) => p.id === id)
-);
+export const cartItems = cartIds.map((id) => products.find((p) => p.id === id));
 
 export const shipping = 12;
 export const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);

@@ -10,12 +10,12 @@ function ProductCard({ item }) {
             alt={item.name}
             className="aspect-4/3 w-full object-cover md:aspect-square"
           />
-          <span className="absolute left-3 top-3 rounded-full bg-cream px-3 py-1 text-xs font-medium text-cocoa">
+          <span className="absolute left-3 top-3 rounded-full bg-cream px-3 py-1 text-xs lg:text-sm font-medium text-cocoa">
             {item.tag}
           </span>
         </div>
         <div className="flex-1 p-4">
-          <p className="truncate text-xs uppercase text-cocoa/60">
+          <p className="truncate text-xs lg:text-sm uppercase text-cocoa/60">
             {item.maker}
           </p>
           <h3 className="mt-1 truncate font-semibold text-cocoa">
@@ -24,7 +24,7 @@ function ProductCard({ item }) {
           <p className="mt-1 font-semibold text-cocoa">
             ${item.price.toFixed(2)}
           </p>
-          <p className="mt-1 truncate text-sm text-cocoa/60">{item.note}</p>
+          <p className="mt-1 truncate text-sm lg:text-base text-cocoa/60">{item.note}</p>
         </div>
       </article>
     </Link>

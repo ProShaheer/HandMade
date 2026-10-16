@@ -42,10 +42,10 @@ function Shop() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-8">
+    <main className="mx-auto max-w-6xl px-6 md:px-10 py-8">
       <button
         onClick={() => setFiltersOpen(!filtersOpen)}
-        className="mb-4 flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-medium text-cocoa transition hover:border-brand md:hidden"
+        className="mb-4 flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm lg:text-base font-medium text-cocoa transition hover:border-brand md:hidden"
       >
         <SlidersHorizontal size={16} />
         Filters
@@ -61,20 +61,20 @@ function Shop() {
             <h2 className="font-semibold text-cocoa">Filters</h2>
             <button
               onClick={clearAll}
-              className="text-sm font-medium text-cocoa/70 transition hover:text-brand"
+              className="text-sm lg:text-base font-medium text-[#6B4F3A] transition"
             >
               Clear All
             </button>
           </div>
 
-          <h3 className="mt-4 text-sm font-semibold text-cocoa">
+          <h3 className="mt-4 text-sm lg:text-base font-semibold text-cocoa">
             Fulfillment Status
           </h3>
           <div className="mt-3 space-y-3">
             {statuses.map((item) => (
               <label
                 key={item.value}
-                className="flex cursor-pointer items-center gap-3 text-sm text-cocoa"
+                className="flex cursor-pointer items-center gap-3 text-sm lg:text-base text-cocoa"
               >
                 <input
                   type="radio"
@@ -99,11 +99,11 @@ function Shop() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search artisan crafts..."
               autoFocus={params.get("focus") === "search"}
-              className="w-full bg-transparent text-sm text-cocoa outline-none placeholder:text-cocoa/50"
+              className="w-full bg-transparent text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/50"
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-between text-sm text-cocoa/70">
+          <div className="mt-4 flex items-center justify-between text-sm lg:text-base text-cocoa/70">
             <p>
               Showing {visible.length} items in "
               {status === "All" ? "All Crafts" : status}"
@@ -116,8 +116,7 @@ function Shop() {
                 className="rounded-md border border-line bg-white px-2 py-1 text-cocoa outline-none focus:border-brand"
               >
                 <option>Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
+        
               </select>
             </label>
           </div>
@@ -129,7 +128,7 @@ function Shop() {
               ))}
             </div>
           ) : (
-            <div className="mt-8 rounded-xl border border-dashed border-line bg-white p-10 text-center text-sm text-cocoa/60">
+            <div className="mt-8 rounded-xl border border-dashed border-line bg-white p-10 text-center text-sm lg:text-base text-cocoa/60">
               No items match your search. Try clearing the filters.
             </div>
           )}

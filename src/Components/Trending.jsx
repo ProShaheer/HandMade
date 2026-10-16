@@ -3,17 +3,17 @@ import { products } from "../data/products";
 
 function Trending() {
   return (
-    <section id="makers" className="mx-auto max-w-6xl px-6 py-10">
+    <section id="makers" className="mx-auto max-w-6xl px-6 md:px-10 py-10">
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-brand">
+          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-brand">
             Trending now
           </p>
           <h2 className="mt-1 text-2xl font-bold text-cocoa md:text-3xl">
             What everyone is loving
           </h2>
         </div>
-        <a href="#" className="text-sm text-cocoa">
+        <a href="#" className="text-sm lg:text-base text-cocoa">
           View all trending
         </a>
       </div>

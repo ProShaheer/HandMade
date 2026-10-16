@@ -7,12 +7,12 @@ export const products = [
     name: "Willow Chunky Crochet Blanket",
     price: 128,
     note: "Made in 2-3 weeks",
-     gallery: [
-    "/public/images/sewingswaeter.jpg",
-    "/images/willow-2.jpg",
-    "/images/willow-3.jpg",
-    "/images/willow-4.jpg",
-  ],
+    gallery: [
+      "/public/images/sewingswaeter.jpg",
+      "/images/willow-2.jpg",
+      "/images/willow-3.jpg",
+      "/images/willow-4.jpg",
+    ],
   },
   {
     id: 2,
