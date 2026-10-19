@@ -13,7 +13,7 @@ function Account() {
       <p className="mt-1 text-sm lg:text-base text-cocoa/60">sarah.m@example.com</p>
 
     
-      <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4">
+      <div className="mt-5 rounded-xl border-1 border-1-red-200 bg-red-50 p-4">
         <p className="text-sm lg:text-base font-semibold text-red-800">
           Delivery Target Approaching
         </p>
@@ -23,7 +23,7 @@ function Account() {
         </p>
         <Link
           to="/"
-          className="mt-3 inline-block text-xs lg:text-sm font-semibold text-cocoa transition hover:text-brand"
+          className="mt-3 inline-block text-xs lg:text-sm font-semibold text-cocoa transition hover:text-[#B0713F]"
         >
           Direct message the workshop
         </Link>
@@ -32,7 +32,7 @@ function Account() {
       <h2 className="mt-8 text-lg font-bold text-cocoa">Your Bag & Orders</h2>
 
       
-      <div className="mt-3 rounded-xl border border-line bg-white p-4">
+      <div className="mt-3 rounded-xl border-1 border-1-[#E8E0D7] bg-white p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-sm lg:text-base font-semibold text-cocoa">
@@ -48,7 +48,7 @@ function Account() {
         </div>
 
        
-        <div className="mt-4 border-t border-line pt-4">
+        <div className="mt-4 border-1-t border-1-[#E8E0D7] pt-4">
           <div className="relative">
             <span className="absolute left-[16.66%] right-[16.66%] top-5px h-px bg-line" />
             <ol className="relative grid grid-cols-3">
@@ -58,10 +58,10 @@ function Account() {
                   className="flex flex-col items-center gap-2"
                 >
                   <span
-                    className={`h-2.5 w-2.5 rounded-full border ${
+                    className={`h-2.5 w-2.5 rounded-full border-1 ${
                       step.done
-                        ? "border-[#7A5A45] bg-[#7A5A45]"
-                        : "border-cocoa/30 bg-white"
+                        ? "border-1-[#7A5A45] bg-[#7A5A45]"
+                        : "border-1-cocoa/30 bg-white"
                     }`}
                   />
                   <span className="text-[11px] text-cocoa/70">

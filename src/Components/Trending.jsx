@@ -6,7 +6,7 @@ function Trending() {
     <section id="makers" className="mx-auto max-w-6xl px-6 md:px-10 py-10">
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-brand">
+          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-[#B0713F]">
             Trending now
           </p>
           <h2 className="mt-1 text-2xl font-bold text-cocoa md:text-3xl">

@@ -21,7 +21,7 @@ function Cart() {
             {cartItems.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center gap-3 rounded-lg border border-line bg-white p-3"
+                className="flex items-center gap-3 rounded-lg border border-1-[#E8E0D7] bg-white p-3"
               >
                 <img
                   src={item.image}
@@ -43,7 +43,7 @@ function Cart() {
             ))}
           </ul>
 
-          <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+          <div className="rounded-lg border border-1-red-200 bg-red-50 p-3">
             <p className="text-xs lg:text-sm font-semibold text-red-800">
               Honest Need-by Warning
             </p>
@@ -54,7 +54,7 @@ function Cart() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-line bg-white p-4">
+        <div className="rounded-lg border border-1-[#E8E0D7] bg-white p-4">
           <div className="space-y-2 text-sm lg:text-base text-cocoa">
             <div className="flex justify-between">
               <span className="text-cocoa/70">Subtotal</span>
@@ -65,7 +65,7 @@ function Cart() {
               <span className="font-medium">{money(shipping)}</span>
             </div>
           </div>
-          <div className="mt-3 flex justify-between border-t border-line pt-3 text-sm lg:text-base font-bold text-cocoa">
+          <div className="mt-3 flex justify-between border-1-t border-1-[#E8E0D7] pt-3 text-sm lg:text-base font-bold text-cocoa">
             <span>Total</span>
             <span>{money(total)}</span>
           </div>
@@ -77,7 +77,7 @@ function Cart() {
           </Link>
           <Link
             to="/shop"
-            className="mt-3 block text-center text-xs lg:text-sm text-cocoa/70 transition hover:text-brand"
+            className="mt-3 block text-center text-xs lg:text-sm text-cocoa/70 transition hover:text-[#B0713F]"
           >
             Continue shopping
           </Link>

@@ -13,7 +13,7 @@ function Hero() {
       <div className="absolute inset-0 -z-10 bg-black/40" />
 
       <div className="mx-auto flex min-h-75 max-w-6xl flex-col items-start justify-center px-6 py-10 text-left md:min-h-120 md:items-center md:px-10 md:py-16 md:text-center lg:min-h-144">
-        <span className="rounded-full border border-white/40 px-3 py-1 text-[10px] uppercase tracking-wide text-white md:px-4 md:text-xs lg:text-sm">
+        <span className="rounded-full border-1 border-1-white/40 px-3 py-1 text-[10px] uppercase tracking-wide text-white md:px-4 md:text-xs lg:text-sm">
           Made by independent makers
         </span>
 
@@ -37,7 +37,7 @@ function Hero() {
           </Link>
           <Link
             to="/shop?status=made-to-order"
-            className="hidden rounded-lg border border-white/70 px-6 py-3 text-sm lg:text-base font-medium text-white transition hover:bg-white/10 sm:block"
+            className="hidden rounded-lg border-1 border-1-white/70 px-6 py-3 text-sm lg:text-base font-medium text-white transition hover:bg-white/10 sm:block"
           >
             Discover Made-to-Order
           </Link>
