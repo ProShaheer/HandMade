@@ -53,7 +53,7 @@ function Footer() {
           ))}
         </div>
 
-        <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs lg:text-sm text-white/60 sm:flex-row sm:justify-between">
+        <div className="mt-8 flex flex-col gap-2 border-1-t border-1-white/10 pt-5 text-xs lg:text-sm text-white/60 sm:flex-row sm:justify-between">
           <p>© 2026 Handmade. All rights reserved.</p>
           <p>Made by independent makers.</p>
         </div>

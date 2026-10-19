@@ -4,7 +4,7 @@ export const products = [
     tag: "Made to Order",
     image: "/images/willow-blanket.jpg",
     maker: "The Willow Workshop",
-    name: "Willow Chunky Crochet Blanket",
+    name: "Willow Chunky Crochet Throw",
     price: 128,
     note: "Made in 2-3 weeks",
     gallery: [

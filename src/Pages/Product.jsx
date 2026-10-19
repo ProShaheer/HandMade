@@ -12,20 +12,12 @@ const details = [
 ];
 
 const reviews = [
-  {
-    tag: "Standard Construction",
-    text: "[Delivered-order review text and optional customer photos]",
-    photos: 2,
-  },
-  {
-    tag: "Child-Safety Construction",
-    text: "[Delivered-order review text]",
-    photos: 0,
-  },
+  { tag: "Standard Construction", text: "[Delivered-order review text and optional customer photos]", photos: 2 },
+  { tag: "Child-Safety Construction", text: "[Delivered-order review text]", photos: 0 },
 ];
 
 const buttonClass =
-  "block w-full rounded-lg bg-[#7A5A45] py-3 text-center text-sm lg:text-base font-semibold text-white transition hover:opacity-90";
+  "w-full rounded-lg bg-[#7A5A45] py-3 text-center text-sm font-semibold text-white transition hover:opacity-90 md:bg-[#6B4E3A]";
 
 function ProductView({ item }) {
   const price = `$${item.price.toFixed(2)}`;
@@ -50,22 +42,12 @@ function ProductView({ item }) {
     earliest.setDate(earliest.getDate() + PRODUCTION_DAYS);
     earliest.setHours(0, 0, 0, 0);
     const wanted = new Date(`${date}T00:00:00`);
-    const earliestText = earliest.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+    const earliestText = earliest.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
     if (wanted >= earliest) {
-      setTimeline({
-        ok: true,
-        text: `Good news, this date works. Production takes about ${PRODUCTION_DAYS} days.`,
-      });
+      setTimeline({ ok: true, text: `Good news, this date works. Production takes about ${PRODUCTION_DAYS} days.` });
     } else {
-      setTimeline({
-        ok: false,
-        text: `That date is too soon. The earliest estimate is ${earliestText}.`,
-      });
+      setTimeline({ ok: false, text: `That date is too soon. The earliest estimate is ${earliestText}.` });
     }
   };
 
@@ -86,14 +68,9 @@ function ProductView({ item }) {
         setCoords({ latitude, longitude });
 
         try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
-          );
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
           const data = await res.json();
-          setPlace(
-            data.display_name ||
-              `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`,
-          );
+          setPlace(data.display_name || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
           if (data.address && data.address.postcode) {
             setZip(data.address.postcode);
             setZipOk(true);
@@ -109,10 +86,10 @@ function ProductView({ item }) {
         setLocError(
           error.code === 1
             ? "Location permission was denied. Allow it in the address bar and try again."
-            : "Could not find your location. Please try again.",
+            : "Could not find your location. Please try again."
         );
       },
-      { enableHighAccuracy: true, timeout: 10000 },
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   };
 
@@ -121,147 +98,90 @@ function ProductView({ item }) {
     : "";
 
   const optionBox = (active) =>
-    `flex w-full items-start gap-3 rounded-lg border-2 bg-white px-4 py-3 text-left transition ${
-      active ? "border-[#7A5A45]" : "border-line hover:border-[#7A5A45]/50"
+    `flex w-full items-start gap-3 rounded-lg border-2 bg-white px-4 py-3 text-left transition md:items-center md:gap-[1.45cqw] md:px-[2.03cqw] md:py-[1.45cqw] lg:border-[3px] ${
+      active ? "border-[#6B4E3A]" : "border-[#E8E0D7] hover:border-[#6B4E3A]/50"
     }`;
 
   const optionDot = (active) =>
-    `mt-1 h-3 w-3 shrink-0 rounded-full ${
-      active ? "bg-[#7A5A45]" : "border border-cocoa/30"
-    }`;
+    `mt-1 h-3 w-3 shrink-0 rounded-full md:h-[2.03cqw] md:w-[2.03cqw] ${active ? "bg-[#6B4E3A]" : "border border-cocoa/30"}`;
 
   return (
-    <main className="mx-auto max-w-6xl px-6 md:px-10 py-6 md:py-8">
-      <div className="grid gap-6 md:grid-cols-2 md:grid-rows-[auto_1fr] md:items-start md:gap-x-8">
-      
+    <main className="mx-auto max-w-6xl px-6 py-6 md:px-10 md:py-8">
+      <div className="grid gap-6 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] md:grid-rows-[auto_1fr] md:items-start md:gap-x-[4.65%] md:gap-y-0 md:[container-type:inline-size]">
+       
         <div className="md:col-start-1 md:row-start-1">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="aspect-4/3 w-full rounded-xl object-cover md:aspect-4/3"
-          />
-          <div className="mt-2 grid grid-cols-4 gap-2 md:mt-3 md:grid-cols-3 md:gap-3">
+          <img src={item.image} alt={item.name} className="aspect-4/3 w-full rounded-xl object-cover md:aspect-[8/7]" />
+          <div className="mt-2 grid grid-cols-4 gap-2 md:mt-[2.33cqw] md:grid-cols-3 md:gap-[1.74cqw]">
             {[1, 2, 3, 4].map((n) => (
               <img
                 key={n}
                 src={item.image}
                 alt={`${item.name} view ${n}`}
-                className={`aspect-4/3 w-full rounded-lg object-cover md:aspect-7/5 ${
-                  n === 4 ? "md:hidden" : ""
-                }`}
+                className={`aspect-4/3 w-full rounded-lg object-cover md:aspect-[7/5] ${n === 4 ? "md:hidden" : ""}`}
               />
             ))}
           </div>
         </div>
 
-        
         <div className="md:col-start-2 md:row-span-2 md:row-start-1">
-          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-brand">
-            {item.maker}
-          </p>
-          <h1 className="mt-2 text-2xl font-bold leading-tight text-cocoa md:max-w-xs md:text-3xl">
-            {item.name}
-          </h1>
-          <p className="mt-2 text-xl font-semibold text-cocoa md:mt-3">
-            {price}
-          </p>
+          <p className="text-xs font-medium uppercase tracking-wide text-brand md:tracking-normal">{item.maker}</p>
+          <h1 className="mt-2 text-2xl font-bold leading-tight text-cocoa md:mt-1.5 md:max-w-[10rem] md:text-3xl">{item.name}</h1>
+          <p className="mt-2 text-xl font-semibold text-cocoa md:mt-1.5">{price}</p>
 
-          
-          <div className="mt-5 rounded-lg bg-[#EBE1D5] p-4 md:mt-6">
-            <p className="text-sm lg:text-base font-semibold text-cocoa">
+          <div className="mt-5 rounded-lg bg-[#EBE1D5] p-4 md:mt-[3.2cqw] md:p-[2.03cqw]">
+            <p className="text-sm font-semibold text-cocoa md:text-[2.03cqw]">
               <span className="md:hidden">Produced after you order</span>
-              <span className="hidden md:inline">
-                Made to Order Production Commitment
-              </span>
+              <span className="hidden md:inline">Made to Order Production Commitment</span>
             </p>
-            <p className="mt-1 text-sm lg:text-base text-cocoa/70">
-              <span className="md:hidden">
-                Handmade after ordering. Queue takes 2-3 weeks. Slow craft means
-                zero waste.
-              </span>
-              <span className="hidden md:inline">
-                Produced sustainably after purchase. Expect 2-3 weeks slow-craft
-                assembly.
-              </span>
+            <p className="mt-1 text-sm text-cocoa/70 md:mt-[0.58cqw] md:text-[1.74cqw] md:leading-normal">
+              <span className="md:hidden">Handmade after ordering. Queue takes 2-3 weeks. Slow craft means zero waste.</span>
+              <span className="hidden md:inline">Produced sustainably after purchase. Expect 2-3 weeks slow-craft assembly.</span>
             </p>
           </div>
 
-         
-          <p className="mt-5 text-sm lg:text-base font-semibold text-cocoa md:mt-6">
-            Construction Option
-          </p>
+          <p className="mt-5 text-sm font-semibold text-cocoa md:mt-[2.33cqw] md:text-[2.03cqw]">Construction Option</p>
 
-          <div className="mt-2 space-y-2">
-          
-            <button
-              type="button"
-              onClick={() => setOption("standard")}
-              className={`${optionBox(option === "standard")} md:hidden`}
-            >
+          <div className="mt-2 space-y-2 md:mt-[1.16cqw]">
+            <button type="button" onClick={() => setOption("standard")} className={`${optionBox(option === "standard")} md:hidden`}>
               <span className={optionDot(option === "standard")} />
               <span>
-                <span className="block text-sm lg:text-base text-cocoa">
-                  Standard Decorative Weave
-                </span>
-                <span className="mt-0.5 block text-xs lg:text-sm text-cocoa/60">
-                  Default loose, heavy weave ideal for adult spaces and styling.
-                </span>
+                <span className="block text-sm text-cocoa">Standard Decorative Weave</span>
+                <span className="mt-0.5 block text-xs text-cocoa/60">Default loose, heavy weave ideal for adult spaces and styling.</span>
               </span>
             </button>
 
-            <button
-              type="button"
-              onClick={() => setOption("safety")}
-              className={optionBox(option === "safety")}
-            >
+            <button type="button" onClick={() => setOption("safety")} className={optionBox(option === "safety")}>
               <span className={`${optionDot(option === "safety")} md:mt-0`} />
-              <span className="flex-1 text-sm lg:text-base text-cocoa">
-                Child-Safety Reinforced Option
-              </span>
-              <span className="shrink-0 rounded bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700 md:hidden">
-                Recommended for Ages 0-3
-              </span>
+              <span className="flex-1 text-sm text-cocoa md:text-[1.89cqw] md:leading-[2.33cqw]">Child-Safety Reinforced Option</span>
+              <span className="shrink-0 rounded bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700 md:hidden">Recommended for Ages 0-3</span>
             </button>
           </div>
 
-        
-          <div className="mt-4 rounded-lg border border-line bg-white p-4 md:hidden">
-            <p className="text-sm lg:text-base font-semibold text-cocoa">
-              Child-safety information
-            </p>
-            <p className="mt-2 text-xs lg:text-sm leading-relaxed text-cocoa/60">
-              [Child-safety construction details and standard age range provided
-              by maker]
-            </p>
-            <p className="mt-2 text-xs lg:text-sm font-medium text-brand">
-              [Material and supervision disclosures provided by maker]
-            </p>
+          <div className="mt-4 rounded-lg border border-[#E8E0D7] bg-white p-4 md:hidden">
+            <p className="text-sm font-semibold text-cocoa">Child-safety information</p>
+            <p className="mt-2 text-xs leading-relaxed text-cocoa/60">[Child-safety construction details and standard age range provided by maker]</p>
+            <p className="mt-2 text-xs font-medium text-brand">[Material and supervision disclosures provided by maker]</p>
           </div>
 
-        
-          <div className="mt-4 rounded-xl border border-line bg-white p-4">
-            <p className="text-sm lg:text-base font-semibold text-cocoa">
+          <div className="mt-4 rounded-xl border border-[#E8E0D7] bg-white p-4 md:mt-[3.49cqw] md:border-[1.5px] md:p-[2.03cqw] lg:border-[2.5px]">
+            <p className="text-sm font-semibold text-cocoa md:text-[1.89cqw] md:leading-[2.33cqw]">
               <span className="md:hidden">Need this for an occasion?</span>
-              <span className="hidden md:inline">
-                Need this for a specific occasion?
-              </span>
+              <span className="hidden md:inline">Need this for a specific occasion?</span>
             </p>
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 flex gap-2 md:mt-[1.16cqw] md:gap-[1.45cqw]">
               <input
                 type={dateType}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 onFocus={() => setDateType("date")}
-                onBlur={() => {
-                  if (!date) setDateType("text");
-                }}
+                onBlur={() => { if (!date) setDateType("text"); }}
                 placeholder="Enter date..."
-                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
+                className="w-full rounded-md border border-[#E8E0D7] bg-cream px-3 py-2 text-sm text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand md:h-[4.36cqw] md:border-[1.5px] md:px-[1.45cqw] md:py-0 md:text-[1.6cqw] lg:border-[2.5px]"
               />
               <button
                 type="button"
                 onClick={checkTimeline}
-                className="whitespace-nowrap rounded-md bg-[#7A5A45] px-4 py-2 text-sm lg:text-base font-medium text-white transition hover:opacity-90"
+                className="whitespace-nowrap rounded-md bg-[#7A5A45] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 md:h-[4.36cqw] md:bg-[#6B4E3A] md:px-[2.03cqw] md:py-0 md:text-[1.6cqw] md:font-semibold"
               >
                 <span className="md:hidden">Verify</span>
                 <span className="hidden md:inline">Check Timeline</span>
@@ -269,36 +189,19 @@ function ProductView({ item }) {
             </div>
 
             {timeline && (
-              <p
-                className={`mt-3 text-xs lg:text-sm font-medium ${
-                  timeline.ok ? "text-green-700" : "text-red-700"
-                }`}
-              >
-                {timeline.text}
-              </p>
+              <p className={`mt-3 text-xs font-medium md:mt-[1.74cqw] md:text-[1.74cqw] ${timeline.ok ? "text-green-700" : "text-red-700"}`}>{timeline.text}</p>
             )}
 
-            <p className="mt-3 flex gap-2 text-xs lg:text-sm text-cocoa/60 md:hidden">
+            <p className="mt-3 flex gap-2 text-xs text-cocoa/60 md:hidden">
               <span className="text-brand">▲</span>
-              Made-to-Order timeline requires approximately {
-                PRODUCTION_DAYS
-              }{" "}
-              days for production before transit.
+              Made-to-Order timeline requires approximately {PRODUCTION_DAYS} days for production before transit.
             </p>
           </div>
 
-        
-          <div className="mt-4 rounded-xl border border-line bg-white p-4 md:hidden">
+          <div className="mt-4 rounded-xl border border-[#E8E0D7] bg-white p-4 md:hidden">
             <div className="flex items-center justify-between">
-              <p className="text-sm lg:text-base font-semibold text-cocoa">
-                Delivery Serviceability
-              </p>
-              <button
-                type="button"
-                onClick={detectLocation}
-                disabled={locating}
-                className="flex items-center gap-1 text-xs lg:text-sm font-medium text-cocoa transition hover:text-brand disabled:opacity-60"
-              >
+              <p className="text-sm font-semibold text-cocoa">Delivery Serviceability</p>
+              <button type="button" onClick={detectLocation} disabled={locating} className="flex items-center gap-1 text-xs font-medium text-cocoa transition hover:text-brand disabled:opacity-60">
                 <MapPin size={12} />
                 {locating ? "Detecting..." : "Detect Location"}
               </button>
@@ -309,45 +212,27 @@ function ProductView({ item }) {
                 value={zip}
                 onChange={(e) => setZip(e.target.value)}
                 placeholder="Enter Postal / ZIP Code..."
-                className="w-full rounded-md border border-line bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
+                className="w-full rounded-md border border-[#E8E0D7] bg-cream px-3 py-2 text-sm text-cocoa outline-none placeholder:text-cocoa/50 focus:border-brand"
               />
-              <button
-                type="button"
-                onClick={verifyZip}
-                className="rounded-md border border-[#7A5A45] bg-white px-4 py-2 text-sm lg:text-base font-medium text-cocoa transition hover:bg-cream"
-              >
+              <button type="button" onClick={verifyZip} className="rounded-md border border-[#7A5A45] bg-white px-4 py-2 text-sm font-medium text-cocoa transition hover:bg-cream">
                 Verify
               </button>
             </div>
 
-            {locError && (
-              <p className="mt-3 text-xs lg:text-sm font-medium text-red-700">
-                {locError}
-              </p>
-            )}
+            {locError && <p className="mt-3 text-xs font-medium text-red-700">{locError}</p>}
 
             {coords && (
               <div className="mt-3">
-                <p className="text-xs lg:text-sm text-cocoa/60">Your location</p>
-                <p className="mt-0.5 text-sm lg:text-base font-medium text-cocoa">{place}</p>
-                <iframe
-                  title="Your location on the map"
-                  src={mapSrc}
-                  loading="lazy"
-                  className="mt-3 h-40 w-full rounded-lg border border-line"
-                />
-                <a
-                  href={`https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-2 inline-block text-xs lg:text-sm font-medium text-brand"
-                >
+                <p className="text-xs text-cocoa/60">Your location</p>
+                <p className="mt-0.5 text-sm font-medium text-cocoa">{place}</p>
+                <iframe title="Your location on the map" src={mapSrc} loading="lazy" className="mt-3 h-40 w-full rounded-lg border border-[#E8E0D7]" />
+                <a href={`https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs font-medium text-brand">
                   Open in Maps
                 </a>
               </div>
             )}
 
-            <div className="mt-3 space-y-2 text-xs lg:text-sm">
+            <div className="mt-3 space-y-2 text-xs">
               <div className="flex justify-between text-cocoa">
                 <span className="text-cocoa/60">Standard Courier Ground:</span>
                 <span className="font-medium">$12.00</span>
@@ -355,85 +240,67 @@ function ProductView({ item }) {
               <div className="flex items-center justify-between text-cocoa">
                 <span className="text-cocoa/60">Serviceability</span>
                 {zipOk ? (
-                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">
-                    Eligible
-                  </span>
+                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">Eligible</span>
                 ) : (
-                  <span className="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-medium text-red-700">
-                    Enter a valid code
-                  </span>
+                  <span className="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-medium text-red-700">Enter a valid code</span>
                 )}
               </div>
             </div>
           </div>
 
-         
-          <Link to="/cart" className={`mt-4 hidden md:block ${buttonClass}`}>
+          <Link
+            to="/cart"
+            className={`mt-4 hidden items-center justify-center md:mt-[2.91cqw] md:flex md:h-[6.83cqw] md:py-0 md:text-[1.89cqw] ${buttonClass}`}
+          >
             Commission This Piece ({price})
           </Link>
 
-          
           <div className="mt-6 space-y-4 md:hidden">
             {details.map((row) => (
               <div key={row.label}>
-                <p className="text-sm lg:text-base font-semibold text-cocoa">{row.label}</p>
-                <p className="mt-1 text-sm lg:text-base text-cocoa/60">{row.text}</p>
+                <p className="text-sm font-semibold text-cocoa">{row.label}</p>
+                <p className="mt-1 text-sm text-cocoa/60">{row.text}</p>
               </div>
             ))}
           </div>
         </div>
 
        
-        <div className="rounded-xl border border-line bg-white p-4 md:col-start-1 md:row-start-2">
-          <p className="text-xs lg:text-sm font-medium uppercase tracking-wide text-brand">
+        <div className="rounded-xl border border-[#E8E0D7] bg-white p-4 md:col-start-1 md:row-start-2 md:mt-[2.33cqw] md:border-[1.5px] md:p-[2.33cqw] lg:border-[2.5px]">
+          <p className="text-xs font-medium uppercase tracking-wide text-brand md:text-[1.6cqw] md:tracking-normal">
             <span className="md:hidden">The artisan</span>
-            <span className="hidden md:inline">
-              The artisan behind the craft
-            </span>
+            <span className="hidden md:inline">The artisan behind the craft</span>
           </p>
-          <div className="mt-3 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm lg:text-base font-semibold text-white">
+          <div className="mt-3 flex items-center gap-3 md:mt-[1.45cqw] md:gap-[1.74cqw]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white md:h-[4.65cqw] md:w-[4.65cqw] md:text-[2.03cqw]">
               {item.maker[0]}
             </div>
             <div>
-              <p className="text-sm lg:text-base font-semibold text-cocoa">{item.maker}</p>
-              <p className="text-xs lg:text-sm text-cocoa/60">Portland, Oregon</p>
+              <p className="text-sm font-semibold text-cocoa md:text-[1.89cqw]">{item.maker}</p>
+              <p className="text-xs text-cocoa/60 md:text-[1.6cqw]">Portland, Oregon</p>
             </div>
           </div>
-          <p className="mt-3 text-sm lg:text-base leading-relaxed text-cocoa/70 md:hidden">
-            Every piece on Handmade is created by an independent artisan or
-            small craft business. No factories, no mass production — just
-            skilled hands, quality materials, and a story behind each stitch.
+          <p className="mt-3 text-sm leading-relaxed text-cocoa/70 md:hidden">
+            Every piece on Handmade is created by an independent artisan or small craft business. No factories, no mass production — just skilled hands, quality materials, and a story behind each stitch.
           </p>
         </div>
       </div>
 
       
       <div className="mt-8 md:hidden">
-        <h2 className="text-xl font-bold text-cocoa">
-          Delivered-Order Reviews
-        </h2>
+        <h2 className="text-xl font-bold text-cocoa">Delivered-Order Reviews</h2>
 
-        <div className="mt-4 divide-y divide-line">
+        <div className="mt-4 divide-y divide-[#E8E0D7]">
           {reviews.map((review) => (
             <div key={review.tag} className="py-4 first:pt-0">
-              <p className="text-sm lg:text-base font-semibold text-cocoa">
-                Verified delivered customer
-              </p>
-              <p className="mt-0.5 text-xs lg:text-sm text-cocoa/60">[Review date]</p>
-              <span className="mt-2 inline-block rounded bg-[#F1E9DD] px-2 py-1 text-[11px] text-cocoa/70">
-                {review.tag}
-              </span>
-              <p className="mt-2 text-sm lg:text-base text-cocoa/70">{review.text}</p>
+              <p className="text-sm font-semibold text-cocoa">Verified delivered customer</p>
+              <p className="mt-0.5 text-xs text-cocoa/60">[Review date]</p>
+              <span className="mt-2 inline-block rounded bg-[#F1E9DD] px-2 py-1 text-[11px] text-cocoa/70">{review.tag}</span>
+              <p className="mt-2 text-sm text-cocoa/70">{review.text}</p>
               {review.photos > 0 && (
                 <div className="mt-3 flex gap-2">
                   {Array.from({ length: review.photos }).map((_, index) => (
-                    <img
-                      key={index}
-                      src={item.image}
-                      alt="Customer photo"
-                      className="h-20 w-24 rounded-md object-cover"
-                    />
+                    <img key={index} src={item.image} alt="Customer photo" className="h-20 w-24 rounded-md object-cover" />
                   ))}
                 </div>
               )}
@@ -441,7 +308,7 @@ function ProductView({ item }) {
           ))}
         </div>
 
-        <Link to="/cart" className={`mt-2 ${buttonClass}`}>
+        <Link to="/cart" className={`mt-2 block ${buttonClass}`}>
           Add to Cart ({price})
         </Link>
       </div>

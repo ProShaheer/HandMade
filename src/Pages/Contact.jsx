@@ -40,7 +40,7 @@ function Contact() {
 
       <form
         onSubmit={handleSubmit}
-        className="mt-6 space-y-4 rounded-xl border border-line bg-white p-5"
+        className="mt-6 space-y-4 rounded-xl border-1 border-1-[#E8E0D7] bg-white p-5"
       >
         {fields.map((field) => (
           <label key={field.name} className="block">
@@ -52,7 +52,7 @@ function Contact() {
               name={field.name}
               placeholder={field.placeholder}
               required
-              className="mt-1 w-full rounded-md border border-line bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/40 focus:border-brand"
+              className="mt-1 w-full rounded-md border-1 border-1-[#E8E0D7] bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/40 focus:border-1-brand"
             />
           </label>
         ))}
@@ -64,7 +64,7 @@ function Contact() {
             rows="5"
             required
             placeholder="How can we help?"
-            className="mt-1 w-full rounded-md border border-line bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/40 focus:border-brand"
+            className="mt-1 w-full rounded-md border-1 border-1-[#E8E0D7] bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/40 focus:border-1-brand"
           />
         </label>
 

@@ -68,7 +68,7 @@ function Checkout() {
           </Link>
           <Link
             to="/shop"
-            className="rounded-lg border border-line bg-white px-6 py-3 text-sm lg:text-base font-semibold text-cocoa transition hover:border-brand"
+            className="rounded-lg border-1 border-1-[#E8E0D7] bg-white px-6 py-3 text-sm lg:text-base font-semibold text-cocoa transition hover:border-1-brand"
           >
             Continue shopping
           </Link>
@@ -85,7 +85,7 @@ function Checkout() {
       
         <form
           onSubmit={handleSubmit}
-          className="rounded-xl border border-line bg-white p-4 md:p-6"
+          className="rounded-xl border-1 border-1-[#E8E0D7] bg-white p-4 md:p-6"
         >
           <h2 className="text-sm lg:text-base font-semibold text-cocoa">
             Contact and shipping
@@ -102,7 +102,7 @@ function Checkout() {
                   name={field.name}
                   placeholder={field.placeholder}
                   required
-                  className="mt-1 w-full rounded-md border border-line bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/40 focus:border-brand"
+                  className="mt-1 w-full rounded-md border-1 border-1-[#E8E0D7] bg-cream px-3 py-2 text-sm lg:text-base text-cocoa outline-none placeholder:text-cocoa/40 focus:border-1-brand"
                 />
               </label>
             ))}
@@ -121,7 +121,7 @@ function Checkout() {
         </form>
 
       
-        <div className="rounded-xl border border-line bg-white p-4">
+        <div className="rounded-xl border-1 border-1-[#E8E0D7] bg-white p-4">
           <h2 className="text-sm lg:text-base font-semibold text-cocoa">Order summary</h2>
           <ul className="mt-3 space-y-3">
             {cartItems.map((item) => (
@@ -146,7 +146,7 @@ function Checkout() {
             ))}
           </ul>
 
-          <div className="mt-4 space-y-2 border-t border-line pt-3 text-sm lg:text-base text-cocoa">
+          <div className="mt-4 space-y-2 border-1-t border-1-[#E8E0D7] pt-3 text-sm lg:text-base text-cocoa">
             <div className="flex justify-between">
               <span className="text-cocoa/70">Subtotal</span>
               <span>{money(subtotal)}</span>
